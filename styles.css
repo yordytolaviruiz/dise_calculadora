@@ -1,0 +1,455 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    background: linear-gradient(135deg, 
+        #0f0c29 0%, 
+        #302b63 50%, 
+        #24243e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+/* Efecto de partículas futuristas */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.calculator {
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 25px;
+    padding: 2rem;
+    box-shadow: 
+        0 0 40px rgba(102, 126, 234, 0.4),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 420px;
+    width: 100%;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de luz neón en los bordes */
+.calculator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent,
+        #667eea,
+        #764ba2,
+        transparent);
+    animation: neonGlow 3s infinite;
+}
+
+.calculator::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent,
+        #4caf50,
+        #667eea,
+        transparent);
+    animation: neonGlow 3s infinite reverse;
+}
+
+@keyframes neonGlow {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.display {
+    background: linear-gradient(135deg, 
+        rgba(10, 10, 20, 0.9) 0%,
+        rgba(20, 20, 40, 0.9) 100%);
+    border-radius: 15px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: right;
+    min-height: 120px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, 0.5),
+        0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de pantalla digital */
+.display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(102, 126, 234, 0.05) 50%,
+        transparent 100%);
+    animation: scanLine 8s linear infinite;
+}
+
+@keyframes scanLine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.previous-operand {
+    color: rgba(102, 126, 234, 0.8);
+    font-size: 1.3rem;
+    min-height: 1.8rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+.current-operand {
+    color: #ffffff;
+    font-size: 2.8rem;
+    font-weight: 700;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(102, 126, 234, 0.3);
+    letter-spacing: 1.5px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    padding: 1.5rem;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    font-family: 'Rajdhani', sans-serif;
+    position: relative;
+    overflow: hidden;
+    background: rgba(30, 30, 46, 0.9);
+    color: #ffffff;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-number {
+    background: linear-gradient(135deg, 
+        rgba(40, 40, 60, 0.9) 0%,
+        rgba(50, 50, 80, 0.9) 100%);
+    color: #ffffff;
+}
+
+.btn-number:hover {
+    background: linear-gradient(135deg, 
+        rgba(60, 60, 100, 0.9) 0%,
+        rgba(70, 70, 120, 0.9) 100%);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.btn-operator {
+    background: linear-gradient(135deg, 
+        #667eea 0%, 
+        #764ba2 100%);
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-operator:hover {
+    background: linear-gradient(135deg, 
+        #768efa 0%, 
+        #865bb2 100%);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-clear {
+    background: linear-gradient(135deg, 
+        #ff6b6b 0%, 
+        #ff4757 100%);
+    color: white;
+    font-weight: 700;
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, 
+        #ffa502 0%, 
+        #ff7f00 100%);
+    color: white;
+    font-weight: 700;
+}
+
+.btn-equals {
+    background: linear-gradient(135deg, 
+        #4caf50 0%, 
+        #45a049 100%);
+    color: white;
+    font-weight: 700;
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+.history {
+    border-top: 2px solid rgba(102, 126, 234, 0.3);
+    padding-top: 1.5rem;
+    position: relative;
+}
+
+.history::before {
+    content: 'HISTORY';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26, 26, 46, 0.9);
+    padding: 0 1rem;
+    color: #667eea;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.history h3 {
+    color: #667eea;
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+}
+
+.history-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 10px;
+    background: rgba(20, 20, 35, 0.7);
+    border-radius: 10px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+/* Scrollbar estilizado */
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 3px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+        #667eea 0%, 
+        #764ba2 100%);
+    border-radius: 3px;
+}
+
+.history-item {
+    background: rgba(30, 30, 46, 0.8);
+    padding: 0.8rem;
+    margin-bottom: 0.4rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #b8b8d1;
+    font-family: 'Rajdhani', sans-serif;
+    border-left: 3px solid #667eea;
+    transition: all 0.3s;
+}
+
+.history-item:hover {
+    background: rgba(40, 40, 60, 0.9);
+    transform: translateX(5px);
+    color: #ffffff;
+}
+
+.btn-clear-history {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, 
+        rgba(255, 107, 107, 0.9) 0%, 
+        rgba(255, 71, 87, 0.9) 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.btn-clear-history:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 107, 107, 1) 0%, 
+        rgba(255, 71, 87, 1) 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 5px 15px rgba(255, 107, 107, 0.4),
+        0 0 10px rgba(255, 107, 107, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .calculator {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+    
+    .current-operand {
+        font-size: 2.2rem;
+    }
+    
+    .btn {
+        padding: 1.2rem;
+        font-size: 1.1rem;
+    }
+}
+/* Versión muy compacta */
+.calculator {
+    max-width: 320px;
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.display {
+    padding: 0.8rem;
+    min-height: 70px;
+    border-radius: 10px;
+}
+
+.current-operand {
+    font-size: 1.8rem;
+}
+
+.previous-operand {
+    font-size: 1rem;
+}
+
+.btn {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+.buttons {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.history {
+    padding-top: 0.8rem;
+}
+
+.history-list {
+    max-height: 120px;
+}
+
+.btn-clear-history {
+    padding: 0.8rem;
+}
+/*titulo de calculadora avanzada*/
+.calculator h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
+
+}
+.calculator h3 {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #cccccc;
+    margin-bottom: 1rem;
+    font-family: 'Rajdhani', sans-serif;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
