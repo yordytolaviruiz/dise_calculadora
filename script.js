@@ -59,7 +59,7 @@ class Calculator {
         
         // Verificar división entre cero
         if (this.operation === '÷' && current === 0) {
-           // this.currentOperand = 'Error: No es posible dividir entre cero';
+           this.currentOperand = 'No es posible dividir entre cero';
             this.isError = true;
             this.previousOperand = '';
             this.operation = undefined;
@@ -232,4 +232,5 @@ document.addEventListener('keydown', (e) => {
         calculator.clear();
         calculator.updateDisplay();
     }
+
 });
